@@ -11,20 +11,20 @@ import javax.sound.sampled.SourceDataLine;
 public class AudioPlayer {	
 	
 	/**
-	 * The Constructor for the player (currently contains test tones)
+	 * The Constructor for the player (currently contains commented-out test tones)
 	 * @throws LineUnavailableException
 	 */
 	public AudioPlayer() throws LineUnavailableException{
-		playSound(441, 200, 50);
-		playSound(741, 300, 50);
-		playSound(341, 400, 50);
+//		playSound(441, 200, 50);
+//		playSound(741, 300, 50);
+//		playSound(341, 400, 50);
 	}
 	
 	/**
 	 * The function which plays the tones
-	 * @param freq The frequency of the tone
-	 * @param duration The 
-	 * @param volume
+	 * @param freq The frequency of the tone in Hz
+	 * @param duration The duration of the tone in ms
+	 * @param volume The volume of the tone, on a scale of 0-100
 	 * @throws LineUnavailableException
 	 */
 	public void playSound(int freq, int duration, int volume) throws LineUnavailableException{
@@ -47,8 +47,8 @@ public class AudioPlayer {
 	}
 	
 	/**
-	 * 
-	 * @param args
+	 * Runs automatically, generates the player and runs the code in the constructor
+	 * @param args Arguments passed from cmd
 	 * @throws LineUnavailableException
 	 */
 	public static void main(String[] args) throws LineUnavailableException {
