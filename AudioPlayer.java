@@ -29,7 +29,7 @@ public class AudioPlayer {
 	 * @param frequency The float 0.0 - 1.0
 	 * @return The frequency in Hz
 	 */
-	public static float convert(float frequency) {
+	public float convert(float frequency) {
 		//Convert Frequency
 		double lowerRange = 1.7;
 		double upperRange = 4;
