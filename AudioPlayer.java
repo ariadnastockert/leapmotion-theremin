@@ -82,7 +82,12 @@ public class AudioPlayer {
 	 * Stops the current sound
 	 */
 	public void stopSound() {
-		ac.reset();
+		ac = new AudioContext();
+		freqEnv = new Envelope(ac, 0);
+		volEnv = new Envelope(ac, 0);
+		wp = new WavePlayer(ac, freqEnv, Buffer.SINE);
+
+		g = new Gain(ac, 1, volEnv);
 	}
 	
 	/**
