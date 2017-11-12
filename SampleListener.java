@@ -14,7 +14,7 @@ import com.leapmotion.leap.InteractionBox;
 class SampleListener extends Listener {
 	
 	AudioPlayer player;
-	HandManager manager
+	HandManager manager;
 
     public void onConnect(Controller controller) {
         System.out.println("Connected");
