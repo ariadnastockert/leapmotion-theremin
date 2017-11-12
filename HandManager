@@ -29,18 +29,52 @@ public class HandManager {
 	}
 	
 	private void checkHands() {
-		Vector pos = frontFinger.stabilizedTipPosition();
+		Vector pos = box.normalizePoint(frontFinger.stabilizedTipPosition());
 		float posX = pos.getX();
 		float posY = pos.getY();
 		float posZ = pos.getZ();
 		
+		System.out.println(posX + " ,"+ posY+ " ," + posZ);
+		
 		if(soundPlaying == false) {
 			if(hands.isEmpty() == false) {
-				player.startSound(posX,posZ);
+				currentHandID =hand.id();
+				player.startSound(posX,posY);
+				soundPlaying = true;
+			}
+			else {
+				currentHandID=0;
+			}
+		}
+		
+		else {
+			if (hands.isEmpty() == true) {
+				//player.stopSound();
+				player.changeSound(posX, 0);
+				soundPlaying = false;
+				currentHandID = 0; 
+			}
+			
+			
+			else {
+				newHandID = hand.id();
+				if (sameHand() == true) {
+					player.changeSound(posX, posY);
+				}
+				else {
+					//player.stopSound();
+					player.changeSound(posX, 0);
+					player.startSound(posX, posY);
+				}
 			}
 		}
 		
 		
+		
+	}
+
+	private boolean sameHand() {
+		return true;
 	}
 
 }
