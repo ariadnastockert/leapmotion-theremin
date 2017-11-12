@@ -4,6 +4,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import net.beadsproject.beads.core.AudioContext;
+import net.beadsproject.beads.core.UGen;
 import net.beadsproject.beads.data.Buffer;
 import net.beadsproject.beads.ugens.Envelope;
 import net.beadsproject.beads.ugens.Gain;
@@ -40,11 +41,31 @@ public class AudioPlayer {
 	}
 	
 	/**
+	 * Converts the float wave to a waveform
+	 * @param wave The float from 0.0 - 1.0
+	 * @return The waveform
+	 */
+	public static Buffer convertWave(float wave) {
+		//Convert Wave to Index
+		if(wave < 0.25) {
+			return Buffer.SAW;
+		}else if(wave < 0.5) {
+			return Buffer.SINE;
+		}else if(wave < 0.75) {
+			return Buffer.SQUARE;
+		}else if(wave < 1) {
+			return Buffer.TRIANGLE;
+		}else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Starts Playing a sound
 	 * @param frequency The float 0.0 - 1.0 to represent the Frequency
 	 * @param volume The float 0.0 - 1.0 to represent the Volume
 	 */
-	public void startSound(float frequency, float volume) {
+	public void startSound(float frequency, float volume, float wave) {
 		frequency = (int) convert(frequency);
 		System.out.println(frequency);
 		System.out.println(volume);
@@ -52,7 +73,7 @@ public class AudioPlayer {
 		ac = new AudioContext();
 		freqEnv = new Envelope(ac, frequency);
 		volEnv = new Envelope(ac, volume);
-		wp = new WavePlayer(ac, freqEnv, Buffer.SINE);
+		wp = new WavePlayer(ac, freqEnv, convertWave(wave));
 
 		g = new Gain(ac, 1, volEnv);
 
@@ -67,11 +88,13 @@ public class AudioPlayer {
 	 * @param frequency The float 0.0 - 1.0 to represent the frequency
 	 * @param volume The float 0.0 - 1.0 to represent the volume
 	 */
-	public static void changeSound(float frequency, float volume) {
+	public static void changeSound(float frequency, float volume, float wave) {
 		frequency = (int) convert(frequency);
 		
 		freqEnv.addSegment(frequency, 10);
 		volEnv.addSegment(volume, 10);
+		System.out.println(wp.getBuffer());
+		wp.setBuffer(convertWave(wave));
 		
 		ac.reset();
 		ac.out.addInput(g);
@@ -82,12 +105,7 @@ public class AudioPlayer {
 	 * Stops the current sound
 	 */
 	public void stopSound() {
-		ac = new AudioContext();
-		freqEnv = new Envelope(ac, 0);
-		volEnv = new Envelope(ac, 0);
-		wp = new WavePlayer(ac, freqEnv, Buffer.SINE);
-
-		g = new Gain(ac, 1, volEnv);
+		ac = null;
 	}
 	
 	/**
